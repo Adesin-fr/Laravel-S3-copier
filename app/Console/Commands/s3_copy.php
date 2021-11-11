@@ -40,6 +40,17 @@ class s3_copy extends Command
         echo $file_count . " files to copy !\n";
         $initial_start_time = time();
         foreach ($files as $file) {
+
+            $source_size = Storage::disk("source_s3")->size($file);
+            $destination_size = 0;
+            if (Storage::disk("destination_s3")->exists($file)) {
+                $destination_size = Storage::disk("destination_s3")->size($file);
+            }
+
+            if ($source_size == $destination_size) {
+                echo "Skipped $file : files are same size ($current_file / $file_count).\n";
+            }
+
             $current_file++;
             $start_time = microtime(true);
 
@@ -59,7 +70,8 @@ class s3_copy extends Command
             echo "Copied $file : $transfert_rate ($current_file / $file_count)\n";
         }
         $total_duration = time() - $initial_start_time;
-        echo "All files done : $total_copied_size kB copied in $total_duration seconds (". number_format($total_copied_size / $total_duration, 0, ".", "") . "kB/s" .")" ;
+        $total_copied_size = floor($total_copied_size, 0);
+        echo "All files done : $total_copied_size kB copied in $total_duration seconds (" . number_format($total_copied_size / $total_duration, 0, ".", "") . "kB/s" . ")\n";
 
         return Command::SUCCESS;
     }
