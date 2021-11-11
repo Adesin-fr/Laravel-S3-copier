@@ -42,7 +42,7 @@ class s3_copy extends Command
             $file_contents =  Storage::disk("source_s3")->get($file);
             $duration = microtime(true) - $start_time;
             if ($duration){
-                $transfert_rate = number_format(strlen($file_contents/1024) /$duration,0, ".", ""). "kB/s";
+                $transfert_rate = number_format((strlen($file_contents)/1024) /$duration,0, ".", ""). "kB/s";
             }else{
                 $transfert_rate = "Wow ! Too quick to count !";
             }
