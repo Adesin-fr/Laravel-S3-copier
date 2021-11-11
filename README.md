@@ -12,3 +12,6 @@ Just copy the `.env.example` file to `.env` and edit it to suit your needs.
 
 **IMPORTANT NOTE : the default settings I used are setting cache and public options on destination files. 
 Set them as needed in `config/filesystems.php` **
+
+
+Made freely by ADESIN.FR Nov. 2021 !
