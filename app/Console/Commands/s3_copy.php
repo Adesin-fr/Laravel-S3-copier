@@ -49,6 +49,7 @@ class s3_copy extends Command
 
             if ($source_size == $destination_size) {
                 echo "Skipped $file : files are same size ($current_file / $file_count).\n";
+                continue;
             }
 
             $current_file++;
