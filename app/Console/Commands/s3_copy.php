@@ -32,15 +32,18 @@ class s3_copy extends Command
 
         // List Files from source :
         $files = Storage::disk("source_s3")->allFiles();
+        $file_count =sizeof($files);
+        $current_file = 0;
 
-        echo sizeof($files) ." files to copy !\n";
+        echo  $file_count." files to copy !\n";
         foreach($files as $file){
+            $current_file++;
             $start_time=microtime(true);
             $file_contents =  Storage::disk("source_s3")->get($file);
             $duration = microtime(true) - $start_time;
             $transfert_rate = number_format(strlen($file_contents/1024) /$duration,0, ".", "");
             Storage::disk("destination_s3")->put($file, $file_contents);
-            echo "Copied $file : $transfert_rate kB/s\n";
+            echo "Copied $file : $transfert_rate kB/s ($current_file / $file_count)\n";
         }
 
         return Command::SUCCESS;
